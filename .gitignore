@@ -1,0 +1,8 @@
+/dist/
+/node_modules/
+/.idea/.gitignore
+/.idea/runConfigurations/bin_www.xml
+/.idea/jsLibraryMappings.xml
+/.idea/modules.xml
+/.idea/portefolioBackend.iml
+/.idea/vcs.xml

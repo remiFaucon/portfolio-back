@@ -1,0 +1,20 @@
+{
+  "name": "portefoliobackend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently -k -n \"Typescript,Node\" -p \"[{name}]\" -c \"blue,green\" \"npx tsc --watch\" \"nodemon ./dist/bin/www.js\""
+  },
+  "dependencies": {
+    "deep-email-validator": "^0.1.21",
+    "express": "~4.16.1",
+    "nodemailer": "^6.8.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.9",
+    "@types/nodemailer": "^6.4.6",
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.20"
+  }
+}
