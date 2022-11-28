@@ -1,6 +1,7 @@
 import express from 'express';
 import { validate } from 'deep-email-validator'
 import {createTransport} from 'nodemailer'
+
 export const router = express.Router();
 
 router.post('/', async (req, res) => {
@@ -8,7 +9,8 @@ router.post('/', async (req, res) => {
     res.status(500).send({
       message: "tout les champs n'ont pas etait saisis"
     })
-  } else {
+  }
+  else {
     const validEmail = await validate(req.body.email)
     if (!validEmail.valid) {
       res.status(500).send({
@@ -16,8 +18,7 @@ router.post('/', async (req, res) => {
       })
     }
     else {
-
-      let transporter = createTransport({
+      const transporter = createTransport({
         host: "smtp.gmail.com",
         port: 587,
         secure: false,
@@ -27,15 +28,14 @@ router.post('/', async (req, res) => {
         },
       });
 
-      let info = await transporter.sendMail({
+      await transporter.sendMail({
         from: req.body.email,
         to: "faucon.remi04@gmail.com",
         subject: "porte folio - " + req.body.object,
         text: req.body.emailBody,
       });
 
-      res.status(200).send({message: info.response});
-
+      res.status(200).send({message: "email envoyé"});
     }
   }
 });
