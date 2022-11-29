@@ -52,9 +52,7 @@ let adminId: string | null = null
 const tempMessage: Messages[] = []
 
 io.sockets.on("connect", (socket) => {
-  console.log("co")
   socket.on("admin connection", () => {
-    console.log("admin co")
     adminId = socket.id;
   })
 
@@ -82,6 +80,15 @@ io.sockets.on("connect", (socket) => {
       }
       else {
         tempMessage.push({sender: author, messages: [message]});
+      }
+    }
+  })
+
+  socket.on('message to user', (message) => {
+    for (let i = 0; i < connected.length; i++) {
+      if (connected[i].name === message.name) {
+        socket.to(connected[i].socket).emit("message from admin", message.message);
+        break;
       }
     }
   })
