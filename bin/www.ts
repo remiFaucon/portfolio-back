@@ -19,7 +19,7 @@ const server = createServer(app);
 
 server.listen(port);
 server.on('error', onError);
-server.on('listening', onListening);
+server.on('listening', () => console.log('server run on port ' + port));
 
 function onError(error: { syscall: string; code: any; }) {
   if (error.syscall !== 'listen') {
@@ -39,14 +39,6 @@ function onError(error: { syscall: string; code: any; }) {
   }
 }
 
-function onListening() {
-  const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr!.port;
-  console.log('Listening on ' + bind);
-}
-
 
 const io = new SocketServer(server, {
   cors: {
@@ -60,7 +52,9 @@ let adminId: string | null = null
 const tempMessage: Messages[] = []
 
 io.sockets.on("connect", (socket) => {
+  console.log("co")
   socket.on("admin connection", () => {
+    console.log("admin co")
     adminId = socket.id;
   })
 
@@ -69,6 +63,10 @@ io.sockets.on("connect", (socket) => {
     if (validEmail.valid) {
       connected.push({name: email, socket: socket.id});
       socket.emit("connected")
+      socket.to(adminId!).emit("user connected", email)
+    }
+    else {
+      socket.emit("not connected")
     }
   })
 
