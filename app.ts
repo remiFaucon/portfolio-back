@@ -1,11 +1,20 @@
 import express from "express";
-import {join} from "path";
 import {router} from "./controllers/mail";
 
 export const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(join(__dirname, 'public')));
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin,X-Requested-With,Content-Type,Accept"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+    );
+    next();
+});
 
 app.use('/mail', router);

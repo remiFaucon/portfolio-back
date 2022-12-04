@@ -11,15 +11,17 @@ import {validate} from "deep-email-validator";
 import {app} from "../app";
 import {createServer} from "http";
 import {Server as SocketServer} from "socket.io"
+import {config} from 'dotenv'
 
+config()
 const port = 3000
-app.set('port', port);
+app.set('port', process.env.PORT);
 
 const server = createServer(app);
 
-server.listen(port);
+server.listen(process.env.PORT);
 server.on('error', onError);
-server.on('listening', () => console.log('server run on port ' + port));
+server.on('listening', () => console.log('server run on port ' + process.env.PORT));
 
 function onError(error: { syscall: string; code: any; }) {
   if (error.syscall !== 'listen') {
@@ -27,11 +29,11 @@ function onError(error: { syscall: string; code: any; }) {
   }
   switch (error.code) {
     case 'EACCES':
-      console.error('Port ' + port + ' requires elevated privileges');
+      console.error('Port ' + process.env.PORT + ' requires elevated privileges');
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error('Port ' + port + ' is already in use');
+      console.error('Port ' + process.env.PORT + ' is already in use');
       process.exit(1);
       break;
     default:
